@@ -2,14 +2,14 @@ import 'package:besoul/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class OnboardPage extends StatefulWidget {
-  const OnboardPage({Key? key}) : super(key: key);
+class OnboardPage2 extends StatefulWidget {
+  const OnboardPage2({Key? key}) : super(key: key);
 
   @override
-  State<OnboardPage> createState() => _OnboardPageState();
+  State<OnboardPage2> createState() => _OnboardPage2State();
 }
 
-class _OnboardPageState extends State<OnboardPage> {
+class _OnboardPage2State extends State<OnboardPage2> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -90,19 +90,8 @@ class _StartWidgetState extends State<_StartWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                color: Color(0xFF9BE6CF),
-              ),
-              height: 6,
-              width: 25,
-            ),
-            const SizedBox(
-              width: 4,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
                 color: Color(0xFFE9E9E9),
               ),
               height: 6,
@@ -112,8 +101,19 @@ class _StartWidgetState extends State<_StartWidget> {
               width: 4,
             ),
             Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                color: Color(0xFF9BE6CF),
+              ),
+              height: 6,
+              width: 25,
+            ),
+            const SizedBox(
+              width: 4,
+            ),
+            Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
                 color: Color(0xFFE9E9E9),
               ),
               height: 6,

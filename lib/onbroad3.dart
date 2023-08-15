@@ -2,14 +2,14 @@ import 'package:besoul/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class OnboardPage extends StatefulWidget {
-  const OnboardPage({Key? key}) : super(key: key);
+class OnboardPage3 extends StatefulWidget {
+  const OnboardPage3({Key? key}) : super(key: key);
 
   @override
-  State<OnboardPage> createState() => _OnboardPageState();
+  State<OnboardPage3> createState() => _OnboardPage3State();
 }
 
-class _OnboardPageState extends State<OnboardPage> {
+class _OnboardPage3State extends State<OnboardPage3> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -20,9 +20,7 @@ class _OnboardPageState extends State<OnboardPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _PictureWidget(),
-              SizedBox(
-                height: 26,
-              ),
+              SizedBox(height: 26,),
               _StartWidget(),
             ],
           ),
@@ -31,7 +29,6 @@ class _OnboardPageState extends State<OnboardPage> {
     );
   }
 }
-
 class _PictureWidget extends StatelessWidget {
   const _PictureWidget({Key? key}) : super(key: key);
 
@@ -42,37 +39,16 @@ class _PictureWidget extends StatelessWidget {
       child: Column(
         children: [
           SvgPicture.asset('assets/Group.svg'),
+          const SizedBox(height: 26,),
           const SizedBox(
-            height: 26,
-          ),
-          const SizedBox(
-            child: Text(
-              'Tìm Kiếm Sản Phẩm Theo KOL Bạn Yêu Thích',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Color(0xFF112835),
-                  fontSize: 22,
-                  fontWeight: FontWeight.w600),
-            ),
-          ),
-          const SizedBox(
-            height: 26,
-          ),
-          const Text(
-            ' Thường xuyên theo dõi KOL bạn đã follow để xem những sản phẩm mới nhất nhé..!',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF797E7E),
-            ),
-            textAlign: TextAlign.center,
-          )
+            child: Text('Tìm Kiếm Sản Phẩm Theo KOL Bạn Yêu Thích',textAlign: TextAlign.center,style: TextStyle(color: Color(0xFF112835),fontSize: 22,fontWeight: FontWeight.w600),),),
+          const SizedBox(height: 26,),
+          const Text(' Thường xuyên theo dõi KOL bạn đã follow để xem những sản phẩm mới nhất nhé..!',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: Color(0xFF797E7E),),textAlign: TextAlign.center,)
         ],
       ),
     );
   }
 }
-
 class _StartWidget extends StatefulWidget {
   const _StartWidget({Key? key}) : super(key: key);
 
@@ -90,31 +66,31 @@ class _StartWidgetState extends State<_StartWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                color: Color(0xFFE9E9E9),
+              ),
+              height: 6,
+              width: 25,
+            ),
+            const SizedBox(
+              width: 4,
+            ),
+            Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                color: Color(0xFFE9E9E9),
+              ),
+              height: 6,
+              width: 25,
+            ),
+            const SizedBox(
+              width: 4,
+            ),
+            Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
                 color: Color(0xFF9BE6CF),
-              ),
-              height: 6,
-              width: 25,
-            ),
-            const SizedBox(
-              width: 4,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                color: Color(0xFFE9E9E9),
-              ),
-              height: 6,
-              width: 25,
-            ),
-            const SizedBox(
-              width: 4,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                color: Color(0xFFE9E9E9),
               ),
               height: 6,
               width: 25,
@@ -122,9 +98,8 @@ class _StartWidgetState extends State<_StartWidget> {
           ],
         ),
         const SizedBox(height: 40),
-        Ink(
-          child: InkWell(
-            onTap: () {
+          InkResponse(
+            onTap: ()  {
               {
                 Navigator.push(
                   context,
@@ -134,17 +109,21 @@ class _StartWidgetState extends State<_StartWidget> {
                 );
               }
             },
-            child: const Text(
-              'Bỏ qua',
-              style: TextStyle(
-                color: Color(0xFF5F6D70),
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                decoration: TextDecoration.underline,
+            child: Container(
+              width: 120,
+              height: 40,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(3)),
+                color: Color(0xFF60D7B2),
+              ),
+              child: const Center(
+                child: Text(
+                  'Bắt đầu',
+                  style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 14),
+                ),
               ),
             ),
           ),
-        )
       ],
     );
   }
