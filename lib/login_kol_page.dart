@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -92,6 +95,37 @@ class _LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<_LoginWidget> {
+  final dio = Dio();
+  Color loginBarColor = Colors.grey;
+  bool canNavigate = false;
+
+  void post() async {
+    var data = {
+      'loginId': emailController.text,
+      'passwords': passwordController.text,
+    };
+    var response = await dio.post(
+        'https://mobile.gongu365.vn/v5/api/account/login-with-pass',
+        data: jsonEncode(data),
+        options: Options(responseType: ResponseType.json, headers:  {
+          'accept': '*/*',
+          'Content-Type': 'application/json',
+        }));
+    if (response.statusCode == 200) {
+      print(response.statusCode);
+      print(response.data);
+
+      loginBarColor = const Color(0xFF60D7B2);
+      canNavigate = true;
+    } else if (response.statusCode == 400) {
+      loginBarColor = Colors.grey;
+      canNavigate = false;
+      print(response.statusMessage);
+    } else {
+      print('Error: Unexpected response status');
+    }
+  }
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -119,28 +153,41 @@ class _LoginWidgetState extends State<_LoginWidget> {
         const SizedBox(
           height: 20,
         ),
-        Container(
-          width: 298,
-          height: 50,
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(3)),
-            color: const Color(0xFF60D7B2),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.3),
-                spreadRadius: 2,
-                blurRadius: 3,
-                offset: const Offset(0, 1), // changes position of shadow
+        InkResponse(
+          onTap: () {
+            post();
+            // if (canNavigate) {
+            //   Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (ctx) => const LoginKOLPage(),
+            //     ),
+            //   );
+            // } else {}
+          },
+          child: Container(
+            width: 298,
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(3)),
+              color: loginBarColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  spreadRadius: 2,
+                  blurRadius: 3,
+                  offset: const Offset(0, 1), // changes position of shadow
+                ),
+              ],
+            ),
+            child: const Center(
+              child: Text(
+                'ĐĂNG NHẬP',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500),
               ),
-            ],
-          ),
-          child: const Center(
-            child: Text(
-              'ĐĂNG NHẬP',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500),
             ),
           ),
         ),
