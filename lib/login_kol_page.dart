@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:besoul/bottom_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -98,36 +99,72 @@ class _LoginWidgetState extends State<_LoginWidget> {
   final dio = Dio();
   Color loginBarColor = Colors.grey;
   bool canNavigate = false;
-
+  String responseData = '';
   void post() async {
     var data = {
       'loginId': emailController.text,
       'passwords': passwordController.text,
     };
-    var response = await dio.post(
+    try {
+      var response = await dio.post(
         'https://mobile.gongu365.vn/v5/api/account/login-with-pass',
         data: jsonEncode(data),
-        options: Options(responseType: ResponseType.json, headers:  {
-          'accept': '*/*',
-          'Content-Type': 'application/json',
-        }));
-    if (response.statusCode == 200) {
-      print(response.statusCode);
-      print(response.data);
+        options: Options(
+          responseType: ResponseType.json,
+          headers: {
+            'accept': '*/*',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
 
-      loginBarColor = const Color(0xFF60D7B2);
-      canNavigate = true;
-    } else if (response.statusCode == 400) {
-      loginBarColor = Colors.grey;
-      canNavigate = false;
-      print(response.statusMessage);
-    } else {
-      print('Error: Unexpected response status');
+      if (response.statusCode == 200 && (isEmailValid && isPasswordValid)) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (ctx) => const BottomPage(),
+          ),
+        );
+      } else {
+        print(response.statusCode);
+        print(response.statusMessage);
+      }
+    } on DioException catch (e) {
+      final response = e.response;
+      if (response != null) {
+        setState(() {
+          responseData = response.data.toString();
+        });
+        print(response.data);
+      } else {
+        print(e.requestOptions);
+        print(e.message);
+      }
+    } catch (error) {
+      print(error);
     }
   }
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool isEmailValid = false;
+  bool isPasswordValid = false;
+
+  @override
+  void initState() {
+    super.initState();
+    emailController.addListener(() {
+      setState(() {
+        isEmailValid = emailController.text.isNotEmpty;
+      });
+    });
+
+    passwordController.addListener(() {
+      setState(() {
+        isPasswordValid = passwordController.text.isNotEmpty;
+      });
+    });
+  }
 
   @override
   void dispose() {
@@ -153,24 +190,20 @@ class _LoginWidgetState extends State<_LoginWidget> {
         const SizedBox(
           height: 20,
         ),
+        Text(responseData, style: TextStyle(fontSize: 13,color: Colors.grey),),
+        SizedBox(height: 10,),
         InkResponse(
           onTap: () {
             post();
-            // if (canNavigate) {
-            //   Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //       builder: (ctx) => const LoginKOLPage(),
-            //     ),
-            //   );
-            // } else {}
           },
           child: Container(
             width: 298,
             height: 50,
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(3)),
-              color: loginBarColor,
+              color: isEmailValid && isPasswordValid
+                  ? const Color(0xFF60D7B2)
+                  : Colors.grey,
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.3),
@@ -191,6 +224,7 @@ class _LoginWidgetState extends State<_LoginWidget> {
             ),
           ),
         ),
+
         const SizedBox(
           height: 20,
         ),

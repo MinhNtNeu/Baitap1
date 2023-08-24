@@ -1,4 +1,4 @@
-import 'package:besoul/onbroad_page.dart';
+import 'package:besoul/pageview.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const OnboardPage(),
+      home:  const PageViewExampleApp(),
     );
   }
 }

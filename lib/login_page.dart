@@ -14,12 +14,14 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [_AppBarWidget(),
-            SizedBox(height: 44,),
-            _LogoWidget(),
-            SizedBox(height: 64,),
-            _SignInWidget()],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [_AppBarWidget(),
+              SizedBox(height: 44,),
+              _LogoWidget(),
+              SizedBox(height: 64,),
+              _SignInWidget()],
+          ),
         ),
       ),
     );
