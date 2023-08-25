@@ -10,6 +10,8 @@ class NotifocationPage extends StatefulWidget {
 class _NotifocationPageState extends State<NotifocationPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Center(
+      child: Text('notification'),
+    );
   }
 }

@@ -10,6 +10,8 @@ class BrandPage extends StatefulWidget {
 class _BrandPageState extends State<BrandPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Center(
+      child: Text('Brand'),
+    );
   }
 }
