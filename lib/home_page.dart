@@ -49,10 +49,10 @@ class _IntroduceWidget extends StatefulWidget {
 
 class _IntroduceWidgetState extends State<_IntroduceWidget> {
   List<IntroduceModel> intro = [
-    IntroduceModel(image: 'assets/img1.png', status: 'Mars Concert Chengdu'),
+    IntroduceModel(image: 'assets/img1.png', status: '화장품을 제공하는 전자 상거래'),
     IntroduceModel(image: 'assets/2.png', status: '화장품을 제공하는 전자 상거래', introduce: '빠른 - 보장 - 명성'),
-    IntroduceModel(image: 'assets/2.jpg', status: '华晨宇 ', introduce: '빠른 - 보장 - 명성'),
-    IntroduceModel(image: 'assets/1.jpg', status: ' 黑白艺术家 - 华晨宇'),
+    IntroduceModel(image: 'assets/2.jpg', status: '화장품을 제공하는 전자 상거래 ', introduce: '빠른 - 보장 - 명성'),
+    IntroduceModel(image: 'assets/1.jpg', status: ' 화장품을 제공하는 전자 상거래'),
   ];
   int selectedindex = 0;
   final PageController _pageController = PageController(initialPage: 0);
