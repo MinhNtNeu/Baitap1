@@ -190,8 +190,8 @@ class _LoginWidgetState extends State<_LoginWidget> {
         const SizedBox(
           height: 20,
         ),
-        Text(responseData, style: TextStyle(fontSize: 13,color: Colors.grey),),
-        SizedBox(height: 10,),
+        Text(responseData, style: const TextStyle(fontSize: 13,color: Color(0xFFE57070)),  textAlign: TextAlign.center,),
+        const SizedBox(height: 10,),
         InkResponse(
           onTap: () {
             post();

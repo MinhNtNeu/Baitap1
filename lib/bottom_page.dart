@@ -5,7 +5,7 @@ import 'package:besoul/home_page.dart';
 import 'package:besoul/notification_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'model/images.dart';
+import 'images.dart';
 
 class BottomPage extends StatefulWidget {
   const BottomPage({super.key});

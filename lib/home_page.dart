@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'package:besoul/model/introduce_model.dart';
-import 'package:besoul/model/productmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'model/images.dart';
-import 'model/typemodel.dart';
+import 'images.dart';
+import 'introduce_model.dart';
+import 'productmodel.dart';
+import 'typemodel.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -70,7 +71,7 @@ class _IntroduceWidgetState extends State<_IntroduceWidget> {
         }
         _pageController.animateToPage(
           nextPage,
-          duration: const Duration(milliseconds: 30),
+          duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
         );
       }
