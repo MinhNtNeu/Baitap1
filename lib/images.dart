@@ -1,0 +1,11 @@
+const String icHome = 'assets/home.svg';
+const String icDHome = 'assets/d_home.svg';
+const String icBack ='assets/back.svg';
+const String icDiscover ='assets/discover.svg';
+const String icEllipse ='assets/Ellipse.svg';
+const String icBell ='assets/bell.svg';
+const String icDBell ='assets/d_bell.svg';
+const String icTag ='assets/tag.svg';
+const String icDTag ='assets/d_tag.svg';
+const String avatar ='assets/avatar.jpg';
+const String chuyen ='assets/Line.svg';
