@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'images.dart';
 import 'introduce_model.dart';
@@ -18,20 +19,27 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return  MaterialApp(
       theme:  ThemeData(scaffoldBackgroundColor:  const Color(0xFFF6F6F6)),
-      home: const Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                _IntroduceWidget(),
-                _TypeWidget(),
-                SizedBox(height: 10,),
-                _ProductWidget(),
-                SizedBox(height: 10,),
-                _Product1Widget(),
-                SizedBox(height: 10,),
-                _Product2Widget()
-              ],
+      home: WillPopScope(
+        onWillPop: () async{
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          SystemNavigator.pop();
+          return false;
+        },
+        child: const Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _IntroduceWidget(),
+                  _TypeWidget(),
+                  SizedBox(height: 10,),
+                  _ProductWidget(),
+                  SizedBox(height: 10,),
+                  _Product1Widget(),
+                  SizedBox(height: 10,),
+                  _Product2Widget()
+                ],
+              ),
             ),
           ),
         ),
@@ -130,7 +138,7 @@ class _IntroduceWidgetState extends State<_IntroduceWidget> {
                       child: Opacity(
                         opacity: 1,
                         child: Container(
-                          color: const Color(0xFF5A798366),
+                          color: const Color(0xff5a798366),
                         ),
                       ),),
                     Positioned(
@@ -150,7 +158,6 @@ class _IntroduceWidgetState extends State<_IntroduceWidget> {
                         ],
                       ),
                     ),
-
                     Positioned(
                         top: 418,
                         left: 325,
@@ -231,20 +238,20 @@ class _TypeWidgetState extends State<_TypeWidget> {
   List<TypeModel> type =[
     TypeModel(image: 'assets/beautiful.png', name: 'Beauty'),
     TypeModel(image: 'assets/fashion.png', name: 'Fashion'),
-    TypeModel(image: 'assets/healthy.png', name: 'Healthy'),
+    TypeModel(image: 'assets/fashion.png', name: 'Healthy'),
     TypeModel(image: 'assets/beauty1.png', name: 'Beauty Tip'),
   ];
   @override
   Widget build(BuildContext context) {
     return  Container(
-      height: 100,
+      height: 130,
       color: const Color(0xFFE0E0E0),
       margin: const EdgeInsets.only(left: 0, right: 0),
       child: Center(
         child: ListView.separated(
             separatorBuilder: (ctx, idx) {
               return Container(
-                width: 8,
+                width: 18,
               );
             },
             scrollDirection: Axis.horizontal,
@@ -263,10 +270,9 @@ class _TypeWidgetState extends State<_TypeWidget> {
                   Text(
                     y.name,
                     style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontFamily: 'SF Pro Text',
-                        fontWeight: FontWeight.w400),
+                        color: Color(0xFF595D5F),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500),
                   ),
                 ],
               );
@@ -284,10 +290,10 @@ class _ProductWidget extends StatefulWidget {
 
 class _ProductWidgetState extends State<_ProductWidget> {
   List<ProductModel> product =[
-    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhân xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
-    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhân xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
-    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhân xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
-    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhân xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
+    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhận xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
+    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhận xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
+    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhận xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
+    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhận xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
 
   ];
   @override
@@ -313,88 +319,102 @@ class _ProductWidgetState extends State<_ProductWidget> {
                 SizedBox(
                   height: 560,
                   child: GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 5.0,
-                  mainAxisSpacing: 8.0,
-                  childAspectRatio: 0.6,
-                  children: List.generate(
-                  product.length, (idx) {
-                    var y = product[idx];
-                    return Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                      width: 160,
-                      height: 190,
-                      child: Image.asset(y.image,fit: BoxFit.cover,)),
-                          const SizedBox(height: 10,),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 105,
-                                child: Row(
-                                  children: [
-                                    Image.asset(y.evaluate,height: 12,width: 50,),
-                                    Text(' (${y.amount})',style: const TextStyle(fontSize: 10,color: Color(0xFF949494)),),
-                                  ],
+                    physics: const ClampingScrollPhysics(),
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 5.0,
+                    mainAxisSpacing: 8.0,
+                    childAspectRatio: 0.6,
+                    children: List.generate(
+                        product.length, (idx) {
+                      var y = product[idx];
+                      return Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                                width: 160,
+                                height: 190,
+                                child: Image.asset(y.image,fit: BoxFit.cover,)),
+                            const SizedBox(height: 10,),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 105,
+                                  child: Row(
+                                    children: [
+                                      Image.asset(y.evaluate,height: 12,width: 50,),
+                                      Text(' (${y.amount})',style: const TextStyle(fontSize: 10,color: Color(0xFF949494)),),
+                                    ],
+                                  ),
                                 ),
+                                const SizedBox(width: 4,),
+                                Text(y.comment,style: const TextStyle(fontSize: 10,color: Color(0xFF949494)),),
+
+                              ],
+
+                            ),
+                            SizedBox(
+                              width: 140,
+                              child: Text(y.name, style: const TextStyle(fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF2E2E2E)),),
+                            ),
+                            const SizedBox(height: 4,),
+                            SizedBox(
+                              width: 160,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: 95,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(y.discount, style: const TextStyle(
+                                            decoration: TextDecoration.lineThrough,
+                                            color: Color(0xFF818181),fontSize: 10),),
+                                        Text(y.price,style: const TextStyle(fontSize: 10,color: Color(0xFF2E2E2E),fontWeight: FontWeight.w800),),
+                                      ],
+                                    ),
+                                  ),
+                                  Text(y.quantity,style: const TextStyle(fontSize: 10,color: Color(0xFF8D8D8D)),),
+
+
+                                ],
                               ),
-                              const SizedBox(width: 4,),
-                              Text(y.comment,style: const TextStyle(fontSize: 10,color: Color(0xFF949494)),),
-
-                            ],
-
-                          ),
-                          Text(y.name, style: const TextStyle(fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF2E2E2E)),),
-                          const SizedBox(height: 4,),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width:60,
-                                child: Text(y.discount, style: const TextStyle(
-                                    decoration: TextDecoration.lineThrough,
-                                    color: Color(0xFF818181),fontSize: 10),),
-                              ),
-                              SizedBox(
-                                width: 95,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(y.price,style: const TextStyle(fontSize: 10,color: Colors.black),),
-                                    Text(y.quantity,style: const TextStyle(fontSize: 10,color: Color(0xFF8D8D8D)),),
-                                  ],
-                                ),
-                              ),
-
-
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
                   ),
                 ),
-                Container(
-                  width: 339,
-                  height: 40,
-                  decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(1),),
+                if (product.length > 20)
+                  Container(
+                    width: 339,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(1)),
                       border: Border.all(
-                          color: const Color(0xFFE8E8E8),
-                          width: 1
-                      )
+                        color: const Color(0xFFE8E8E8),
+                        width: 1,
+                      ),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Xem thêm",
+                        style: TextStyle(
+                          color: Color(0xFF6F6F6F),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
                   ),
-                  child: const Center(
-                    child: Text("Xem thêm",style: TextStyle(color: Color(0xFF6F6F6F),fontSize: 13,fontWeight: FontWeight.w500),),
-                  ),
-                )],
-            ),
+              ],
+          ),
         ),
       ),
     );
@@ -409,10 +429,10 @@ class _Product1Widget extends StatefulWidget {
 
 class _Product1WidgetState extends State<_Product1Widget> {
   List<ProductModel> product =[
-    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhân xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
-    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhân xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
-    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhân xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
-    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhân xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
+    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhận xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
+    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhận xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
+    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhận xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
+    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhận xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
 
   ];
   @override
@@ -438,6 +458,7 @@ class _Product1WidgetState extends State<_Product1Widget> {
               SizedBox(
                 height: 560,
                 child: GridView.count(
+                  physics: const ClampingScrollPhysics(),
                   crossAxisCount: 2,
                   crossAxisSpacing: 5.0,
                   mainAxisSpacing: 8.0,
@@ -473,31 +494,35 @@ class _Product1WidgetState extends State<_Product1Widget> {
                             ],
 
                           ),
-                          Text(y.name, style: const TextStyle(fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF2E2E2E)),),
+                          SizedBox(
+                            width: 140,
+                            child: Text(y.name, style: const TextStyle(fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF2E2E2E)),),
+                          ),
                           const SizedBox(height: 4,),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width:60,
-                                child: Text(y.discount, style: const TextStyle(
-                                    decoration: TextDecoration.lineThrough,
-                                    color: Color(0xFF818181),fontSize: 10),),
-                              ),
-                              SizedBox(
-                                width: 95,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(y.price,style: const TextStyle(fontSize: 10,color: Colors.black),),
-                                    Text(y.quantity,style: const TextStyle(fontSize: 10,color: Color(0xFF8D8D8D)),),
-                                  ],
+                          SizedBox(
+                            width: 160,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: 95,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(y.discount, style: const TextStyle(
+                                          decoration: TextDecoration.lineThrough,
+                                          color: Color(0xFF818181),fontSize: 10),),
+                                      Text(y.price,style: const TextStyle(fontSize: 10,color: Color(0xFF2E2E2E),fontWeight: FontWeight.w800),),
+                                    ],
+                                  ),
                                 ),
-                              ),
+                                Text(y.quantity,style: const TextStyle(fontSize: 10,color: Color(0xFF8D8D8D)),),
 
 
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -505,20 +530,29 @@ class _Product1WidgetState extends State<_Product1Widget> {
                   }),
                 ),
               ),
-              Container(
-                width: 339,
-                height: 40,
-                decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(1),),
+              if (product.length > 20)
+                Container(
+                  width: 339,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(1)),
                     border: Border.all(
-                        color: const Color(0xFFE8E8E8),
-                        width: 1
-                    )
+                      color: const Color(0xFFE8E8E8),
+                      width: 1,
+                    ),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      "Xem thêm",
+                      style: TextStyle(
+                        color: Color(0xFF6F6F6F),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 ),
-                child: const Center(
-                  child: Text("Xem thêm",style: TextStyle(color: Color(0xFF6F6F6F),fontSize: 13,fontWeight: FontWeight.w500),),
-                ),
-              )],
+            ],
           ),
         ),
       ),
@@ -534,10 +568,10 @@ class _Product2Widget extends StatefulWidget {
 
 class _Product2WidgetState extends State<_Product2Widget> {
   List<ProductModel> product =[
-    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhân xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
-    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhân xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
-    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhân xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
-    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhân xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
+    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhận xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
+    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhận xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
+    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhận xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
+    ProductModel( image: 'assets/image 7.png', name: 'Son môi Shu - màu đỏ hồng 2022', comment: '7 nhận xét', discount: '200.000 đ', price: '120.000đ', quantity: '25 đã bán', amount: '120', evaluate: 'assets/star.jpg'),
 
   ];
   @override
@@ -563,6 +597,7 @@ class _Product2WidgetState extends State<_Product2Widget> {
               SizedBox(
                 height: 560,
                 child: GridView.count(
+                  physics: const ClampingScrollPhysics(),
                   crossAxisCount: 2,
                   crossAxisSpacing: 5.0,
                   mainAxisSpacing: 8.0,
@@ -598,31 +633,35 @@ class _Product2WidgetState extends State<_Product2Widget> {
                             ],
 
                           ),
-                          Text(y.name, style: const TextStyle(fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF2E2E2E)),),
+                          SizedBox(
+                            width: 140,
+                            child: Text(y.name, style: const TextStyle(fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF2E2E2E)),),
+                          ),
                           const SizedBox(height: 4,),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width:60,
-                                child: Text(y.discount, style: const TextStyle(
-                                    decoration: TextDecoration.lineThrough,
-                                    color: Color(0xFF818181),fontSize: 10),),
-                              ),
-                              SizedBox(
-                                width: 95,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(y.price,style: const TextStyle(fontSize: 10,color: Colors.black),),
-                                    Text(y.quantity,style: const TextStyle(fontSize: 10,color: Color(0xFF8D8D8D)),),
-                                  ],
+                          SizedBox(
+                            width: 160,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: 95,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(y.discount, style: const TextStyle(
+                                          decoration: TextDecoration.lineThrough,
+                                          color: Color(0xFF818181),fontSize: 10),),
+                                      Text(y.price,style: const TextStyle(fontSize: 10,color: Color(0xFF2E2E2E),fontWeight: FontWeight.w800),),
+                                    ],
+                                  ),
                                 ),
-                              ),
+                                Text(y.quantity,style: const TextStyle(fontSize: 10,color: Color(0xFF8D8D8D)),),
 
 
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -630,20 +669,29 @@ class _Product2WidgetState extends State<_Product2Widget> {
                   }),
                 ),
               ),
-              Container(
-                width: 339,
-                height: 40,
-                decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(1),),
+              if (product.length > 20)
+                Container(
+                  width: 339,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(1)),
                     border: Border.all(
-                        color: const Color(0xFFE8E8E8),
-                        width: 1
-                    )
+                      color: const Color(0xFFE8E8E8),
+                      width: 1,
+                    ),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      "Xem thêm",
+                      style: TextStyle(
+                        color: Color(0xFF6F6F6F),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 ),
-                child: const Center(
-                  child: Text("Xem thêm",style: TextStyle(color: Color(0xFF6F6F6F),fontSize: 13,fontWeight: FontWeight.w500),),
-                ),
-              )],
+            ],
           ),
         ),
       ),

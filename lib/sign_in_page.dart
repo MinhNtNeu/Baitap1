@@ -1,19 +1,18 @@
 import 'dart:convert';
 import 'package:besoul/bottom_page.dart';
-import 'package:besoul/sign_in_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginKOLPage extends StatefulWidget {
-  const LoginKOLPage({Key? key}) : super(key: key);
+class SignInPage extends StatefulWidget {
+  const SignInPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginKOLPage> createState() => _LoginKOLPageState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
-class _LoginKOLPageState extends State<LoginKOLPage> {
+class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,24 +36,12 @@ class _LoginKOLPageState extends State<LoginKOLPage> {
                           fontSize: 36,
                           fontWeight: FontWeight.w700),
                     )),
-                const Positioned(
-                  top: 335,
-                  left: 105,
-                  child: Text(
-                    'Đăng nhập',
-                    style: TextStyle(
-                        color: Color(0xFF606265),
-                        fontSize: 32,
-                        fontWeight: FontWeight.w800),
-                  ),
-                )
               ],
             ),
             const _LoginWidget(),
             const SizedBox(
               height: 127,
             ),
-
           ],
         ),
       ),
@@ -97,7 +84,6 @@ class _LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<_LoginWidget> {
-
   bool isLoading = false;
   final dio = Dio();
   Color loginBarColor = Colors.grey;
@@ -105,13 +91,16 @@ class _LoginWidgetState extends State<_LoginWidget> {
   String responseData = '';
 
   void post() async {
+
     var data = {
-      'loginId': emailController.text,
+      'email': emailController.text,
       'passwords': passwordController.text,
+      'username': accountController.text,
+      'displayName': nameController.text,
     };
     try {
       var response = await dio.post(
-        'https://mobile.gongu365.vn/v5/api/account/login-with-pass',
+        'https://mobile.gongu365.vn/v5/api/public/customer/account/register',
         data: jsonEncode(data),
         options: Options(
           responseType: ResponseType.json,
@@ -125,7 +114,8 @@ class _LoginWidgetState extends State<_LoginWidget> {
         isLoading = true;
       });
       await Future.delayed(const Duration(seconds: 2));
-      if (response.statusCode == 200 && (isEmailValid && isPasswordValid)) {
+      if (response.statusCode == 200 &&
+          (isEmailValid && isPasswordValid && isAccountValid && isNameValid)) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('isLoggedIn', true);
         Navigator.push(
@@ -159,8 +149,16 @@ class _LoginWidgetState extends State<_LoginWidget> {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  bool isEmailValid = false;
+  TextEditingController accountController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  bool isEmailValid = true;
   bool isPasswordValid = false;
+  bool isPassValid = false;
+  bool isNameValid = false;
+  bool isAccountValid = false;
+  bool isPasswordMatch = true;
+  bool isChecked = false;
 
   @override
   void initState() {
@@ -176,6 +174,22 @@ class _LoginWidgetState extends State<_LoginWidget> {
         isPasswordValid = passwordController.text.isNotEmpty;
       });
     });
+
+    passController.addListener(() {
+      setState(() {
+        isPassValid = passController.text.isNotEmpty;
+      });
+    });
+    nameController.addListener(() {
+      setState(() {
+        isNameValid = nameController.text.isNotEmpty;
+      });
+    });
+    accountController.addListener(() {
+      setState(() {
+        isAccountValid = accountController.text.isNotEmpty;
+      });
+    });
   }
 
   @override
@@ -184,27 +198,47 @@ class _LoginWidgetState extends State<_LoginWidget> {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+    accountController.dispose();
+    passController.dispose();
+    nameController.dispose();
   }
 
   bool obscurePassword = true;
+  bool obscurePass = true;
+
 
   @override
   Widget build(BuildContext context) {
     return isLoading
         ? const Center(
             child: CircularProgressIndicator(
-              strokeWidth: 4.0,
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-            ))
+            strokeWidth: 4.0,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+          ))
         : Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _inputField('Email', emailController),
+              _inputField('Tài khoản', accountController),
               const SizedBox(
                 height: 20,
               ),
               _inputField('Mật khẩu', passwordController, isPassword: true),
+              const SizedBox(
+                height: 20,
+              ),
+              _inputField('Nhập lại mật khẩu', passController, isPass: true),
+              const SizedBox(
+                height: 20,
+              ),
+              _inputField('Tên hiển thị ', nameController),
+              const SizedBox(
+                height: 20,
+              ),
+              _inputField('Email', emailController,isEmail: true),
+              const SizedBox(
+                height: 20,
+              ),
               const SizedBox(
                 height: 20,
               ),
@@ -216,6 +250,10 @@ class _LoginWidgetState extends State<_LoginWidget> {
               const SizedBox(
                 height: 10,
               ),
+              checkWidget(),
+              const SizedBox(
+                height: 20,
+              ),
               InkResponse(
                 onTap: () {
                   post();
@@ -225,7 +263,12 @@ class _LoginWidgetState extends State<_LoginWidget> {
                   height: 50,
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(3)),
-                    color: isEmailValid && isPasswordValid
+                    color: isEmailValid &&
+                            isPasswordValid &&
+                            isAccountValid &&
+                            isNameValid &&
+                            isPassValid &&
+                            isChecked
                         ? const Color(0xFF60D7B2)
                         : Colors.grey,
                     boxShadow: [
@@ -240,7 +283,7 @@ class _LoginWidgetState extends State<_LoginWidget> {
                   ),
                   child: const Center(
                     child: Text(
-                      'ĐĂNG NHẬP',
+                      'ĐĂNG KÝ',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 14,
@@ -249,23 +292,12 @@ class _LoginWidgetState extends State<_LoginWidget> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                'Quên mật khẩu',
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF64748B),
-                    fontWeight: FontWeight.w400),
-              ),
-              _bottomBarWidget()
             ],
           );
   }
 
   Widget _inputField(String hintText, TextEditingController controller,
-      {isPassword = false}) {
+      {isPassword = false, isPass = false, isEmail = false}) {
     return Container(
       width: 298,
       height: 60,
@@ -296,39 +328,94 @@ class _LoginWidgetState extends State<_LoginWidget> {
                     });
                   },
                 )
-              : null,
+              : isPass
+                  ? IconButton(
+                      icon: Icon(
+                        obscurePass ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          obscurePass = !obscurePass;
+                        });
+                      },
+                    )
+                  : null,
+          errorText: isEmail &&  !isEmailValid ? 'Email không hợp lệ' :isPass && !isPasswordMatch ? 'Mật khẩu không khớp' : null,
+
         ),
-        obscureText: isPassword ? obscurePassword : false,
+        obscureText: isPassword
+            ? obscurePassword
+            : isPass
+                ? obscurePass
+                : false,
+        onChanged: (value) {
+          if (isEmail) {
+            setState(() {
+              isEmailValid = value.contains('@');
+            });
+          } else if (isPass) {
+            setState(() {
+              isPasswordMatch = value == passwordController.text;
+            });}
+        },
+
       ),
     );
   }
-  Widget _bottomBarWidget(){
-    return InkResponse(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-            builder: (ctx) => const SignInPage(),
-        ),);
+
+  Widget checkWidget() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        checkboxWidget(),
+        SizedBox(
+          height: 50,
+          width: 300,
+          child: RichText(
+              text: TextSpan(
+                  text: "Tôi đã đọc và đồng ý với ",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w400),
+                  children: const <TextSpan>[
+                TextSpan(
+                    text: '  Điều khoản sử dụng của công ty',
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        decoration: TextDecoration.underline))
+              ])),
+        ),
+      ],
+    );
+  }
+
+  Widget checkboxWidget() {
+    Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+        MaterialState.pressed,
+        MaterialState.hovered,
+        MaterialState.focused,
+      };
+      if (states.any(interactiveStates.contains)) {
+        return Colors.blue;
+      }
+      return Colors.black;
+    }
+
+    return Checkbox(
+      checkColor: Colors.white,
+      fillColor: MaterialStateProperty.resolveWith(getColor),
+      value: isChecked,
+      onChanged: (bool? value) {
+        setState(() {
+          isChecked = value!;
+        });
       },
-      child: Center(
-        child: RichText(
-            text: TextSpan(
-                text: "Chưa có Tài khoản?",
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey.shade400,
-                    fontWeight: FontWeight.w400),
-                children: const <TextSpan>[
-                  TextSpan(
-                      text: '  Đăng ký ngay',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500))
-                ])),
-      ),
     );
   }
 }
-
